@@ -114,7 +114,7 @@ def recvMessage(sock):
     response = sock.recv(DEFAULT_BUFFER)
 
     # If the response is empty, the client closed the connection
-    if(response == ""):
+    if response == "":
         print "Client closed connection."
         closeSocket(sock)
         sys.exit(0)
