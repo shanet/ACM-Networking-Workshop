@@ -18,12 +18,8 @@ def main():
     else:
         sock = listenForConnection()
 
-    try:
-        # Start the message loop until EOF is reached
-        enterMessageLoop(sock, mode)
-    except (EOFError, KeyboardInterrupt):
-        # Catch and ignore EOF and keyboard interrupts
-        pass
+    # Start the message loop until EOF is reached
+    enterMessageLoop(sock, mode)
 
     # Close the socket properly before exiting
     print "Ending chat"
@@ -105,8 +101,13 @@ def enterMessageLoop(sock, mode):
 
 
 def sendMessage(sock):
-    message = raw_input("> ")
-    sock.send(message)
+    try:
+        message = raw_input("> ")
+        sock.send(message)
+    except (EOFError, KeyboardInterrupt):
+        # Catch and ignore EOF and keyboard interrupts
+        closeSocket(sock)
+        sys.exit(0)
 
 
 def recvMessage(sock):
