@@ -112,7 +112,11 @@ def sendMessage(sock):
 
 def recvMessage(sock):
     print "Waiting for response..."
-    response = sock.recv(DEFAULT_BUFFER)
+    try:
+        response = sock.recv(DEFAULT_BUFFER)
+    except KeyboardInterrupt:
+        closeSocket(sock)
+        sys.exit(0)
 
     # If the response is empty, the client closed the connection
     if response == "":
